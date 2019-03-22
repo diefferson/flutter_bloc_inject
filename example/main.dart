@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    AppInject.init();
+    AppInjector.initialise(Injector.getInjector());
 
     return MaterialApp(
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           primaryColorDark: Colors.blue,
       ),
 
-      home: BlocProvider<HomeBloc>(child:Home()),
+      home: BlocProvider<LoginBloc>(child:LoginScreen()),
     );
 
   }

@@ -1,55 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_inject/flutter_bloc_inject.dart';
-import 'app_inject.dart';
-import 'details.dart';
-import 'service_one.dart';
 
-class Home extends StatefulWidget{
+class LoginScreen extends StatefulWidget{
   @override
-  State<StatefulWidget> createState()  => HomeState();
+  State<StatefulWidget> createState()  => LoginScreenState();
 }
 
-class HomeState extends State<Home>{
+class LoginScreenState extends State<LoginScreen>{
 
-  HomeBloc homeBloc;
+  LoginBloc _loginBloc;
 
   @override
   Widget build(BuildContext context) {
-    homeBloc = AppInject.block(context);
-    homeBloc.success();
-    return Scaffold(
-      appBar: AppBar(title: Text("Flutter Bloc Inject")),
-      body: Container(
 
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: _goToDetails) ,
+    _loginBloc = Injector.getInjector().getBloc(context);
+
+    return  Container(
+        child: Text("My beautiful login screen"),
     );
-  }
-
-  void _goToDetails(){
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Details(),
-      ));
   }
 }
 
-class HomeBloc  extends Bloc {
+class LoginBloc  extends Bloc {
 
-  final ServiceOne serviceOne;
-  final ServiceTwo serviceTwo;
+  final LoginInteractor _loginInteractor;
 
-  HomeBloc(this.serviceOne, this.serviceTwo);
-
-  void success(){
-    print(serviceOne.value());
-    print(serviceTwo.value());
-  }
+  LoginBloc(this._loginInteractor);
 
   @override
   void dispose() {
-    print("diposed");
+    print("Called when LoginScreen is deposed");
+    print("Here you dispose yours Futures and Streams");
   }
 
+}
+
+
+class LoginInteractor{
+
+  final UserRepository _userRepository;
+
+  LoginInteractor(this._userRepository);
+
+}
+
+class UserRepository{
+
+  final RestApi _restApi;
+
+  UserRepository(this._restApi);
+
+}
+
+class RestApi{
+
+  final String url;
+
+  RestApi(this.url);
 
 }

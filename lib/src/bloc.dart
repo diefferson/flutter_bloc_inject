@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc_inject/src/injector.dart';
 
 abstract class Bloc {
-  void dispose();
+  void dispose(){}
 }
 
 class BlocProvider<T extends Bloc> extends StatefulWidget {

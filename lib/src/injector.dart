@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc_inject/src/bloc.dart';
 import 'package:flutter_bloc_inject/src/injector_exception.dart';
 import 'package:flutter_bloc_inject/src/type_bloc.dart';
