@@ -49,10 +49,14 @@ class AppInjector {
   
   Injector initialise(Injector injector) {
       return injector
-        ..singleWithParams<RestApi>((i, p) => RestApi(p["url"])) // Single Instance with dynamic params
-        ..single<UserRepository>((i) => UserRepository(i.get<RestApi>())) // Single instance with injection parameters
-        ..factory<LoginInteractor>((i) => LoginInteractor(i.get<UserRepository>())) // Factory to always provide a new instance
-        ..bloc<LoginBloc>((i) => LoginBloc(i.get<LoginInteractor>())); // Bloc to use with Bloc provider and inject in a Widget
+        // Single Instance with dynamic params
+        ..singleWithParams<RestApi>((i, p) => RestApi(p["url"])) 
+         // Single instance with injection parameters
+        ..single<UserRepository>((i) => UserRepository(i.get<RestApi>()))
+        // Factory to always provide a new instance
+        ..factory<LoginInteractor>((i) => LoginInteractor(i.get<UserRepository>())) 
+         // Bloc to use with Bloc provider and inject in a Widget
+        ..bloc<LoginBloc>((i) => LoginBloc(i.get<LoginInteractor>()));
         
         //Injector also has factoryWithParams and blocWithParams method 
   }
