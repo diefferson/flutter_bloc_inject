@@ -72,7 +72,7 @@ class LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
     
     //Use method getBloc to receive a instance of your contextualized Bloc
-     _loginBloc = Injector.getInjector().getBloc(context);
+     _loginBloc = Injector.getInjector().getBloc<LoginBloc>(context);
     
     return  Container(
         child: Text("My beautiful login screen"),
