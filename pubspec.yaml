@@ -1,6 +1,6 @@
 name: flutter_bloc_inject
 description: Flutter denpendency Injection to Bloc patern apps
-version: 0.0.2
+version: 0.0.3
 author: Diefferson Santos <diefferson.sts@gmail.com>
 homepage: https://github.com/diefferson/flutter_bloc_inject
 
