@@ -1,8 +1,6 @@
-
 import 'package:flutter_bloc_inject/src/injector.dart';
 
 class TypeFactory<T> {
-
   final bool _isSingleton;
   final ObjectFactoryWithParamsFn<T> _factoryFn;
 

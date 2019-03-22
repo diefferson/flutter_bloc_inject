@@ -1,13 +1,11 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc_inject/src/injector.dart';
 
 abstract class Bloc {
-  void dispose(){}
+  void dispose() {}
 }
 
 class BlocProvider<T extends Bloc> extends StatefulWidget {
-
   BlocProvider({Key key, @required this.child}) : super(key: key);
 
   final T bloc = Injector.getInjector().injectBloc<T>();
@@ -19,7 +17,7 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
   static T of<T extends Bloc>(BuildContext context) {
     final type = _typeOf<_HelperBlocProvider<T>>();
     _HelperBlocProvider<T> provider =
-    context.inheritFromWidgetOfExactType(type);
+        context.inheritFromWidgetOfExactType(type);
     return provider.bloc;
   }
 
@@ -27,7 +25,6 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
 }
 
 class _BlocProviderState<T extends Bloc> extends State<BlocProvider<Bloc>> {
-
   @override
   void dispose() {
     bloc.dispose();
@@ -53,7 +50,6 @@ class _BlocProviderState<T extends Bloc> extends State<BlocProvider<Bloc>> {
 }
 
 class _HelperBlocProvider<T extends Bloc> extends InheritedWidget {
-
   final T bloc;
 
   _HelperBlocProvider({this.bloc, Widget child}) : super(child: child);

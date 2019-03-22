@@ -5,15 +5,17 @@ import 'package:flutter_bloc_inject/src/type_bloc.dart';
 import 'package:flutter_bloc_inject/src/type_factory.dart';
 
 typedef T ObjectFactoryFn<T>(Injector injector);
-typedef T ObjectFactoryWithParamsFn<T>(Injector injector, Map<String, dynamic> additionalParameters);
+typedef T ObjectFactoryWithParamsFn<T>(
+    Injector injector, Map<String, dynamic> additionalParameters);
 
 typedef T BlocFactoryFn<T extends Bloc>(Injector injector);
-typedef T BlocFactoryFnWithParamsFn<T extends Bloc>(Injector injector, Map<String, dynamic> additionalParameters);
+typedef T BlocFactoryFnWithParamsFn<T extends Bloc>(
+    Injector injector, Map<String, dynamic> additionalParameters);
 
 class Injector {
-
   static final Map<String, Injector> _injectors = Map<String, Injector>();
-  final Map<String, TypeFactory<Object>> _factories = Map<String, TypeFactory<Object>>();
+  final Map<String, TypeFactory<Object>> _factories =
+      Map<String, TypeFactory<Object>>();
   final Map<String, TypeBloc<Bloc>> _blocs = Map<String, TypeBloc<Bloc>>();
 
   /// The name of this injector.
@@ -31,7 +33,8 @@ class Injector {
 
   Injector._internal(this.name);
 
-  String _makeKey<T>(T type, [String key]) => "${type.toString()}::${key == null ? "default" : key}";
+  String _makeKey<T>(T type, [String key]) =>
+      "${type.toString()}::${key == null ? "default" : key}";
 
   void _map<T>(ObjectFactoryFn<T> factoryFn,
       {bool isSingleton = false, String key}) {
@@ -43,7 +46,7 @@ class Injector {
   }
 
   void _mapWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn,
-      {bool isSingleton = false,String key}) {
+      {bool isSingleton = false, String key}) {
     final objectKey = _makeKey(T, key);
     if (_factories.containsKey(objectKey)) {
       throw InjectorException("Mapping already present for type '$objectKey'");
@@ -55,7 +58,8 @@ class Injector {
     _map(factoryFn, isSingleton: true, key: key);
   }
 
-  void singleWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn, {String key}) {
+  void singleWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn,
+      {String key}) {
     _mapWithParams(factoryFn, isSingleton: true, key: key);
   }
 
@@ -63,11 +67,12 @@ class Injector {
     _map(factoryFn, isSingleton: false, key: key);
   }
 
-  void factoryWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn, {String key}) {
+  void factoryWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn,
+      {String key}) {
     _mapWithParams(factoryFn, isSingleton: false, key: key);
   }
 
-  void bloc<T extends Bloc>(BlocFactoryFn<T> factoryFn, {String key}){
+  void bloc<T extends Bloc>(BlocFactoryFn<T> factoryFn, {String key}) {
     final objectKey = _makeKey(T, key);
     if (_blocs.containsKey(objectKey)) {
       throw InjectorException("Mapping already present for type '$objectKey'");
@@ -75,7 +80,8 @@ class Injector {
     _blocs[objectKey] = TypeBloc<T>((i, p) => factoryFn(i));
   }
 
-  void blocWithParams<T extends Bloc>(BlocFactoryFnWithParamsFn<T> factoryFn, {String key}){
+  void blocWithParams<T extends Bloc>(BlocFactoryFnWithParamsFn<T> factoryFn,
+      {String key}) {
     final objectKey = _makeKey(T, key);
     if (_blocs.containsKey(objectKey)) {
       throw InjectorException("Mapping already present for type '$objectKey'");
@@ -87,19 +93,18 @@ class Injector {
     final objectKey = _makeKey(T, key);
     final objectFactory = _factories[objectKey];
     if (objectFactory == null) {
-      throw InjectorException(
-          "Cannot find object factory for '$objectKey'");
+      throw InjectorException("Cannot find object factory for '$objectKey'");
     }
 
     return objectFactory.get(this, additionalParameters);
   }
 
-  T injectBloc<T extends Bloc>({String key, Map<String, dynamic> additionalParameters}) {
+  T injectBloc<T extends Bloc>(
+      {String key, Map<String, dynamic> additionalParameters}) {
     final objectKey = _makeKey(T, key);
     final objectFactory = _blocs[objectKey];
     if (objectFactory == null) {
-      throw InjectorException(
-          "Cannot find object factory for '$objectKey'");
+      throw InjectorException("Cannot find object factory for '$objectKey'");
     }
 
     return objectFactory.get(this, additionalParameters);
@@ -116,7 +121,7 @@ class Injector {
     _injectors.remove(name);
   }
 
-  void disposeBloc(Bloc bloc){
+  void disposeBloc(Bloc bloc) {
     _blocs.remove(bloc);
   }
 }

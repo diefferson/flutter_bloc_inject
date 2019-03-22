@@ -1,6 +1,4 @@
-
 class InjectorException implements Exception {
-
   String message;
 
   InjectorException(this.message);
