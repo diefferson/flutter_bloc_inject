@@ -6,10 +6,13 @@ abstract class Bloc {
 }
 
 class BlocProvider<T extends Bloc> extends StatefulWidget {
-  BlocProvider({Key key, @required this.child}) : super(key: key);
 
-  final T bloc = Injector.getInjector().injectBloc<T>();
+  BlocProvider({Key key, @required this.child, @required this.injector}) : super(key: key);
+
   final Widget child;
+  final Injector injector;
+
+  T bloc() => injector.injectBloc<T>();
 
   @override
   _BlocProviderState<T> createState() => _BlocProviderState<T>();
@@ -37,7 +40,7 @@ class _BlocProviderState<T extends Bloc> extends State<BlocProvider<Bloc>> {
   @override
   void initState() {
     super.initState();
-    bloc = widget.bloc;
+    bloc = widget.bloc();
   }
 
   @override

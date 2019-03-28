@@ -1,6 +1,6 @@
 name: flutter_bloc_inject
 description: Flutter Dependency Injection to apps with Bloc pattern, to provide an easy injection pattern and powerful
-version: 1.0.0
+version: 1.0.1
 author: Diefferson Santos <diefferson.sts@gmail.com>
 homepage: https://github.com/diefferson/flutter_bloc_inject
 

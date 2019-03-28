@@ -47,8 +47,12 @@ import 'package:flutter_bloc_inject/flutter_bloc_inject.dart';
 
 class AppInjector {
   
-  Injector initialise(Injector injector) {
-      return injector
+  static const _NAME = "BaseInjector";
+
+  static getInjector() => Injector.getInjector(_NAME);
+  
+  Injector initialise() {
+      return getInjector()
         // Single Instance with dynamic params
         ..singleWithParams<RestApi>((i, p) => RestApi(p["url"])) 
          // Single instance with injection parameters
@@ -70,7 +74,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     //Remember that initialize your dependencies map on start your application
-    AppInjector.initialise(Injector.getInjector());
+    AppInjector.initialise();
 
     return MaterialApp(
       title: "Flutter Bloc Inject",
@@ -80,7 +84,8 @@ class MyApp extends StatelessWidget {
 
       //Bloc provider inject HomeBloc with Home widget context to provides auto dispose to Bloc when widget is disposed
       home: BlocProvider<HomeBloc>(
-        child:LoginScreen() 
+        child:LoginScreen(),
+        injector: AppInjector.getInjector()
       ),
     );
 
@@ -100,7 +105,7 @@ class LoginScreenState extends State<LoginScreen>{
   Widget build(BuildContext context) {
     
     //Use method getBloc to receive a instance of your contextualized Bloc
-     _loginBloc = Injector.getInjector().getBloc<LoginBloc>(context);
+     _loginBloc = AppInjector.getInjector().getBloc<LoginBloc>(context);
     
     return  Container(
         child: Text("My beautiful login screen"),
