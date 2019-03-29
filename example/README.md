@@ -131,6 +131,16 @@ class RestApi{
 
 ```
 
+### On Duplicate Entries
+
+For default the Flutter Bloc Inject doesn't replace a object when you re-map it to avoid errors with Hot Reload, but if you need to replace an dependency in Injector dependencies map you can pass replaceOnConflict = true in the map function:
+
+```
+injector.single((i) => UserRepository(i.get<RestApi>()), replaceOnConflict: true); 
+
+```
+
+
 ### Multiple Injectors
 
 The Injector class has a static method [getInjector] that by default returns the default instance of the injector.  In most cases this will be enough.
@@ -140,4 +150,14 @@ injector name will create the injector if it has not be retrieved before.  To de
 ```dart
   final defaultInjector = Injector.getInjector();
   final isolatedInjector = Injector.getInjector("Isolated");
+```
+
+
+### Dispose your dependencies
+
+If you want dispose your map of dependencies to restart it or to clean memory you can use dispose method:
+
+```
+injector.dispose()
+
 ```

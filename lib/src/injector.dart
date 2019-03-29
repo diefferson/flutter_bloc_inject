@@ -37,56 +37,52 @@ class Injector {
       "${type.toString()}::${key == null ? "default" : key}";
 
   void _map<T>(ObjectFactoryFn<T> factoryFn,
-      {bool isSingleton = false, String key}) {
+      {bool isSingleton = false, String key, bool replaceOnConflict = false}) {
     final objectKey = _makeKey(T, key);
-    if (_factories.containsKey(objectKey)) {
-      throw InjectorException("Mapping already present for type '$objectKey'");
+    if (!_factories.containsKey(objectKey) || replaceOnConflict) {
+        _factories[objectKey] = TypeFactory<T>((i, p) => factoryFn(i), isSingleton);
     }
-    _factories[objectKey] = TypeFactory<T>((i, p) => factoryFn(i), isSingleton);
   }
 
   void _mapWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn,
-      {bool isSingleton = false, String key}) {
+      {bool isSingleton = false, String key,bool replaceOnConflict = false}) {
     final objectKey = _makeKey(T, key);
-    if (_factories.containsKey(objectKey)) {
-      throw InjectorException("Mapping already present for type '$objectKey'");
+    if (!_factories.containsKey(objectKey) || replaceOnConflict) {
+      _factories[objectKey] = TypeFactory<T>(factoryFn, isSingleton);
     }
-    _factories[objectKey] = TypeFactory<T>(factoryFn, isSingleton);
   }
 
-  void single<T>(ObjectFactoryFn<T> factoryFn, {String key}) {
-    _map(factoryFn, isSingleton: true, key: key);
+  void single<T>(ObjectFactoryFn<T> factoryFn, {String key, bool replaceOnConflict = false}) {
+    _map(factoryFn, isSingleton: true, key: key,replaceOnConflict: replaceOnConflict);
   }
 
   void singleWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn,
-      {String key}) {
-    _mapWithParams(factoryFn, isSingleton: true, key: key);
+      {String key, bool replaceOnConflict = false}) {
+    _mapWithParams(factoryFn, isSingleton: true, key: key, replaceOnConflict: replaceOnConflict);
   }
 
-  void factory<T>(ObjectFactoryFn<T> factoryFn, {String key}) {
-    _map(factoryFn, isSingleton: false, key: key);
+  void factory<T>(ObjectFactoryFn<T> factoryFn, {String key, bool replaceOnConflict = false}) {
+    _map(factoryFn, isSingleton: false, key: key,replaceOnConflict: replaceOnConflict);
   }
 
   void factoryWithParams<T>(ObjectFactoryWithParamsFn<T> factoryFn,
-      {String key}) {
-    _mapWithParams(factoryFn, isSingleton: false, key: key);
+      {String key, bool replaceOnConflict = false}) {
+    _mapWithParams(factoryFn, isSingleton: false, key: key,replaceOnConflict: replaceOnConflict);
   }
 
-  void bloc<T extends Bloc>(BlocFactoryFn<T> factoryFn, {String key}) {
+  void bloc<T extends Bloc>(BlocFactoryFn<T> factoryFn, {String key, bool replaceOnConflict = false}) {
     final objectKey = _makeKey(T, key);
-    if (_blocs.containsKey(objectKey)) {
-      throw InjectorException("Mapping already present for type '$objectKey'");
+    if (!_blocs.containsKey(objectKey) || replaceOnConflict) {
+      _blocs[objectKey] = TypeBloc<T>((i, p) => factoryFn(i));
     }
-    _blocs[objectKey] = TypeBloc<T>((i, p) => factoryFn(i));
   }
 
   void blocWithParams<T extends Bloc>(BlocFactoryFnWithParamsFn<T> factoryFn,
-      {String key}) {
+      {String key, bool replaceOnConflict = false}) {
     final objectKey = _makeKey(T, key);
-    if (_blocs.containsKey(objectKey)) {
-      throw InjectorException("Mapping already present for type '$objectKey'");
+    if (!_blocs.containsKey(objectKey) || replaceOnConflict) {
+      _blocs[objectKey] = TypeBloc<T>(factoryFn);
     }
-    _blocs[objectKey] = TypeBloc<T>(factoryFn);
   }
 
   T get<T>({String key, Map<String, dynamic> additionalParameters}) {
