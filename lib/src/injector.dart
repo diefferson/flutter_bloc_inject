@@ -70,18 +70,18 @@ class Injector {
     _mapWithParams(factoryFn, isSingleton: false, key: key,replaceOnConflict: replaceOnConflict);
   }
 
-  void bloc<T extends Bloc>(BlocFactoryFn<T> factoryFn, {String key, bool replaceOnConflict = false}) {
+  void bloc<T extends Bloc>(BlocFactoryFn<T> factoryFn, {String key, bool replaceOnConflict = false, bool isSingleton = true}) {
     final objectKey = _makeKey(T, key);
     if (!_blocs.containsKey(objectKey) || replaceOnConflict) {
-      _blocs[objectKey] = TypeBloc<T>((i, p) => factoryFn(i));
+      _blocs[objectKey] = TypeBloc<T>((i, p) => factoryFn(i), isSingleton);
     }
   }
 
   void blocWithParams<T extends Bloc>(BlocFactoryFnWithParamsFn<T> factoryFn,
-      {String key, bool replaceOnConflict = false}) {
+      {String key, bool replaceOnConflict = false, bool isSingleton = true}) {
     final objectKey = _makeKey(T, key);
     if (!_blocs.containsKey(objectKey) || replaceOnConflict) {
-      _blocs[objectKey] = TypeBloc<T>(factoryFn);
+      _blocs[objectKey] = TypeBloc<T>(factoryFn, isSingleton);
     }
   }
 
